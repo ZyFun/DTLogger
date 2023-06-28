@@ -8,6 +8,7 @@ import Foundation
 import os.log
 
 /// Системный логгер, использующий os_log
+@available(macOS 10.14, *)
 public enum SystemLogger {
     enum LogLevel {
         case info

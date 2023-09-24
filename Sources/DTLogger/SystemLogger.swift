@@ -9,6 +9,7 @@ import os.log
 
 /// Системный логгер, использующий os_log
 @available(macOS 10.14, *)
+@available(*, deprecated, renamed: "DTLogger.shared.log", message: "Use new class")
 public enum SystemLogger {
     enum LogLevel {
         case info

@@ -3,7 +3,7 @@
 ![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white)
 <br/>
 ![Target](https://img.shields.io/badge/iOS-12+-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 <br/>
 ![OSLog](https://img.shields.io/badge/-OSLog-blue)
 
@@ -12,7 +12,9 @@
 Логгер основанный на `OSLog` для более удобного отслеживания событий через приложение консоль.
 
 ### News
-**24.09.2023**
+**v.2.0.0 (24.09.2023)**
+- Логгер был переписан и реализован через класс
+- Структура SystemLogger была depricated, вместо этого нужно использовать класс DTLogger
 - Добавлен новый уровень
 - Убран разделитель "=======", так как в Xcode 15 консоль и без него читается удобно
 
@@ -25,6 +27,9 @@ https://github.com/ZyFun/DTLogger.git
 ## Использование
 ```Swift
 import DTLogger
+
+let logger = DTLogger.shared
+logger.log(.info, "Message")
 ```
 </br>
 При использовании логгера, в консоли будет отображаться информация с названием файла, строкой и методом, в котором логгер был использован. Это позводит быстрее ориентироваться в проекте, когда что-то идёт не так.
@@ -33,8 +38,8 @@ import DTLogger
 
 Есть 4 типа важности
 ```Swift
-SystemLogger.info("Message")
-SystemLogger.warning("Message")
-SystemLogger.error("Message")
-SystemLogger.debug("Message")
+- info
+- warning
+- error
+- debug
 ```

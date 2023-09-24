@@ -14,15 +14,14 @@ public enum SystemLogger {
         case info
         case warning
         case error
+        case debug
         
         fileprivate var prefix: String {
             switch self {
-            case .info:
-                return "INFO ℹ️"
-            case .warning:
-                return "WARNING ⚠️"
-            case .error:
-                return "ERROR ❌"
+            case .info: "INFO ℹ️"
+            case .warning: "WARNING ⚠️"
+            case .error: "ERROR ❌"
+            case .debug: "DEBUG 🩺"
             }
         }
     }
@@ -105,6 +104,29 @@ public enum SystemLogger {
         )
     }
     
+    public static func debug(
+        _ message: String,
+        showInConsole: Bool? = true,
+        shouldLogContext: Bool? = true,
+        file: String = #file,
+        function: String = #function,
+        line: Int = #line
+    ) {
+        let logContext = LogContext(
+            file: file,
+            function: function,
+            line: line
+        )
+        
+        SystemLogger.handleLog(
+            level: .debug,
+            message: message,
+            showInConsole: showInConsole ?? false,
+            shouldLogContext: shouldLogContext ?? false,
+            context: logContext
+        )
+    }
+    
     fileprivate static func handleLog(
         level: LogLevel,
         message: String,
@@ -114,9 +136,9 @@ public enum SystemLogger {
     ) {
         
         if showInConsole {
-            var messageComponent = [message, "=========="]
+            var messageComponent = [message]
             if shouldLogContext {
-                messageComponent = [message, context.description, "=========="]
+                messageComponent = [message, context.description]
             }
             
             let formattedMessage = messageComponent.joined(separator: "\n\n")
@@ -135,6 +157,10 @@ public enum SystemLogger {
                        "%{private}@", formattedMessage)
             case .error:
                 os_log(.fault,
+                       log: osLog,
+                       "%{private}@", formattedMessage)
+            case .debug:
+                os_log(.debug,
                        log: osLog,
                        "%{private}@", formattedMessage)
             }

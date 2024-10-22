@@ -9,7 +9,7 @@ import OSLog
 
 /// Класс использует OSLog и считывает происходящее локально, записывая логи в единую
 /// систему журналировнаия.
-final public class DTLogger {
+final public class DTLogger: @unchecked Sendable {
     /// Создаёт инстанс класса и реализует паттерн синглтон
     public static let shared = DTLogger()
     

@@ -41,12 +41,6 @@ final public class DTLogger: @unchecked Sendable {
         }
     }
     
-    // Свойства используются для проведения тестирования
-    #if DEBUG
-    private(set) var currentLevel: OSLogType?
-    private(set) var currentMessage: String?
-    #endif
-    
     /// Метод для вывода лога в консоль
     /// - Этот метод меняет текущий уровень важности
     /// - Parameters:
@@ -81,11 +75,6 @@ final public class DTLogger: @unchecked Sendable {
             let osLog = OSLog(subsystem: module, category: level.prefix)
             
             os_log(osLogLevel, log: osLog, "%{private}@", formattedMessage)
-            
-            #if DEBUG
-            currentLevel = osLogLevel
-            currentMessage = message
-            #endif
         }
     }
 }

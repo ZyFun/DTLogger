@@ -6,6 +6,7 @@
 //
 
 import OSLog
+import AppMetricaCrashes
 
 /// Класс использует OSLog и считывает происходящее локально, записывая логи в единую
 /// систему журналировнаия.
@@ -32,7 +33,7 @@ final public class DTLogger: @unchecked Sendable {
         }
     }
     
-    private struct LogContext {
+	internal struct LogContext {
         let file: String
         let function: String
         let line: Int
@@ -51,14 +52,16 @@ final public class DTLogger: @unchecked Sendable {
     public func log(
         _ level: LogLevel,
         _ message: String,
+		sendToMetrica: Bool = false,
         showInConsole: Bool = true,
         shouldLogContext: Bool = true,
         file: String = #file,
         function: String = #function,
         line: Int = #line
     ) {
+		let logContext = LogContext(file: file, function: function, line: line)
+
         if showInConsole {
-            let logContext = LogContext(file: file, function: function, line: line)
             let formattedMessage = shouldLogContext
             ? "\(message)\n\n\(logContext.description)"
             : message
@@ -76,6 +79,30 @@ final public class DTLogger: @unchecked Sendable {
             
             os_log(osLogLevel, log: osLog, "%{private}@", formattedMessage)
         }
+
+		guard sendToMetrica else { return }
+		if level == .error || level == .warning  {
+			sendToAppMetricaLog(message: message, with: logContext, level: level)
+		}
     }
+
+	private func sendToAppMetricaLog(message: String, with context: LogContext, level: LogLevel) {
+		#if canImport(AppMetricaCrashes)
+		let errorMetrica = AppMetricaError(
+			identifier: "AlertLog",
+			message: message,
+			parameters: [
+				"level": level.prefix,
+				"date": Date(),
+				"file": context.file,
+				"function": context.function,
+				"line": context.line
+			],
+			backtrace: Thread.callStackReturnAddresses,
+			underlyingError: nil
+		)
+		AppMetricaCrashes.crashes().report(error: errorMetrica)
+		#endif
+	}
 }
 

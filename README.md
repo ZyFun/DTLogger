@@ -3,7 +3,7 @@
 ![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white)
 <br/>
 ![Target](https://img.shields.io/badge/iOS-12+-blue)
-![Version](https://img.shields.io/badge/version-2.2.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 <br/>
 ![OSLog](https://img.shields.io/badge/-OSLog-blue)
 
@@ -12,9 +12,6 @@
 Логгер основанный на `OSLog` для более удобного отслеживания событий через приложение консоль.
 
 ### News
-**v.2.2.0 (15.03.2025)**
-- добавлена возможность отправлять события с ошибками в яндекс метрику
-
 **v.2.0.0 (24.09.2023)**
 - Логгер был переписан и реализован через класс
 - Структура SystemLogger была depricated, вместо этого нужно использовать класс DTLogger
